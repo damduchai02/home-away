@@ -23,6 +23,7 @@ function FormInput({
       </Label>
       <Input
         type={type}
+        id={name}
         name={name}
         defaultValue={defaultValue}
         placeholder={placeholder}

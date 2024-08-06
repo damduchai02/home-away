@@ -5,17 +5,15 @@ const supabaseKey = process.env.SUPABASE_KEY as string;
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
-export const uploadImage = async (image: File) => {
-  const avatarFolder = "home-away/avatar";
+export const uploadImage = async (image: File, bucket: string) => {
   const timestamp = Date.now();
   const newName = `${timestamp}-${image.name}`;
   const { data, error } = await supabase.storage
-    .from(avatarFolder)
+    .from(bucket)
     .upload(newName, image, {
       cacheControl: "3600",
       upsert: false,
     });
   if (!data || error) throw new Error("Image upload failed");
-  return supabase.storage.from(avatarFolder).getPublicUrl(newName).data
-    .publicUrl;
+  return supabase.storage.from(bucket).getPublicUrl(newName).data.publicUrl;
 };

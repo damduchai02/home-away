@@ -36,3 +36,41 @@ function validateFile() {
       );
     }, "File must be an image");
 }
+
+export const propertySchema = z.object({
+  name: z
+    .string()
+    .min(2, { message: "Name must be at least 2 characters" })
+    .max(20, { message: "Name must be less than 20 characters" }),
+  tagline: z
+    .string()
+    .min(2, { message: "Tagline must be at least 2 characters" })
+    .max(30, { message: "Tagline must be less than 30 characters" }),
+  category: z.string(),
+  country: z.string(),
+  description: z.string().refine(
+    (description) => {
+      const countWord = description.split(" ").length;
+      return countWord >= 10 && countWord <= 1000;
+    },
+    {
+      message: "Description must be between 10 and 1000 words",
+    },
+  ),
+  price: z.coerce.number().int().min(0, {
+    message: "Price must be a positive number",
+  }),
+  guests: z.coerce.number().int().min(0, {
+    message: "Guests must be a positive number",
+  }),
+  bedrooms: z.coerce.number().int().min(0, {
+    message: "Bedrooms must be a positive number",
+  }),
+  beds: z.coerce.number().int().min(0, {
+    message: "Beds must be a positive number",
+  }),
+  baths: z.coerce.number().int().min(0, {
+    message: "Bahts must be a positive number",
+  }),
+  amenities: z.string(),
+});
